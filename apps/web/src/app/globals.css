@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-purple: #534ab7;
+  --color-brand-blue: #185fa5;
+  --color-brand-teal: #0f6e56;
+  --color-brand-rose: #993556;
+  --color-ink: #17162b;
+  --color-ink-soft: #4a4860;
+  --color-ink-muted: #6b6980;
+  --color-night: #0e0d1a;
+  --color-canvas: #f6f5fb;
+  --color-line: #e4e2f0;
+  --color-good: #0f6e56;
+  --color-push: #185fa5;
+  --color-warn: #993556;
+  --font-sans: var(--font-body), system-ui, sans-serif;
+  --font-display: var(--font-heading), system-ui, sans-serif;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+/* Aimr's signature: a very slow drifting gradient (one cycle every 40 s), used only on the Home
+   header card and the welcome screen. Static when the device asks for reduced motion. */
+.aimr-gradient {
+  background:
+    radial-gradient(120% 120% at 100% 100%, rgb(153 53 86 / 0.9), transparent 55%),
+    linear-gradient(120deg, #534ab7, #185fa5, #0f6e56, #185fa5, #534ab7);
+  background-size: 100% 100%, 400% 400%;
+  animation: aimr-drift 40s ease-in-out infinite;
+  color: #fff;
+}
+
+@keyframes aimr-drift {
+  0% { background-position: 0 0, 0% 50%; }
+  50% { background-position: 0 0, 100% 50%; }
+  100% { background-position: 0 0, 0% 50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aimr-gradient { animation: none; }
+  * { scroll-behavior: auto !important; }
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-brand-purple);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
