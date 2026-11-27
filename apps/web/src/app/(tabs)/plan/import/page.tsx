@@ -72,12 +72,12 @@ export default function ImportSlip() {
 
   if (done === 0) {
     return (
-      <>
+      <div className="lg:max-w-2xl">
         <PageHeader title="Import a result slip" back="/plan/results" />
         <Card>
           <p className="text-ink-soft">You&apos;re in your first semester, so there are no results to import yet.</p>
         </Card>
-      </>
+      </div>
     );
   }
 
@@ -111,7 +111,7 @@ export default function ImportSlip() {
   }
 
   return (
-    <>
+    <div className="lg:max-w-2xl">
       <PageHeader title="Import a result slip" subtitle="Take a screenshot of your results and aimR will read the courses for you." back="/plan/results" />
 
       <Card>
@@ -220,6 +220,6 @@ export default function ImportSlip() {
           {!valid && <p className="mt-2 text-center text-sm text-warn">Every included course needs credits and a grade.</p>}
         </section>
       )}
-    </>
+    </div>
   );
 }

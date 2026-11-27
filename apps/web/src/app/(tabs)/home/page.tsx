@@ -17,7 +17,7 @@ export default function Home() {
   return (
     <>
       <section
-        className={`aimr-gradient rounded-3xl p-6 ${gold ? "aimr-gold shadow-[0_10px_30px_-12px_rgba(122,77,20,0.6)]" : "shadow-[0_10px_30px_-12px_rgba(83,74,183,0.55)]"}`}
+        className={`aimr-gradient rounded-3xl p-6 lg:p-9 ${gold ? "aimr-gold shadow-[0_10px_30px_-12px_rgba(122,77,20,0.6)]" : "shadow-[0_10px_30px_-12px_rgba(83,74,183,0.55)]"}`}
         aria-label="Your standing"
       >
         <div className="flex items-center justify-between">
@@ -25,7 +25,7 @@ export default function Home() {
           <Link
             href="/account"
             aria-label="Account and data"
-            className="-mr-2 flex size-11 items-center justify-center rounded-full text-white/90 transition-colors hover:bg-white/15"
+            className="-mr-2 flex size-11 items-center justify-center rounded-full text-white/90 transition-colors hover:bg-white/15 lg:hidden"
           >
             <UserRound className="size-6" aria-hidden />
           </Link>
@@ -33,14 +33,14 @@ export default function Home() {
         <div className="mt-6 flex items-end justify-between gap-4">
           <div>
             <p className="text-sm text-white/80">Current CGPA</p>
-            <p className="font-display text-5xl font-semibold tracking-tight">{s.cgpa}</p>
+            <p className="font-display text-5xl font-semibold tracking-tight lg:text-7xl">{s.cgpa}</p>
           </div>
           <div className="text-right">
             <p className="text-sm text-white/80">Target</p>
-            <p className="font-display text-[32px] font-semibold leading-tight">{target100 ? fmt100(target100) : "—"}</p>
+            <p className="font-display text-[32px] font-semibold leading-tight lg:text-5xl">{target100 ? fmt100(target100) : "—"}</p>
           </div>
         </div>
-        <p className="mt-4 text-[15px] text-white/90">
+        <p className="mt-4 text-[15px] text-white/90 lg:text-lg">
           {gold
             ? "You beat your semester target. Enjoy today."
             : s.record.credits === 0
@@ -51,6 +51,7 @@ export default function Home() {
         </p>
       </section>
 
+      <div className="lg:mt-6 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6 lg:[&>*]:mt-0">
       {s.record.credits === 0 && completedSemesters(p) > 0 && (
         <Card className="mt-4">
           <SectionTitle>Start with your results</SectionTitle>
@@ -93,6 +94,27 @@ export default function Home() {
           <ButtonLink href="/plan/target" variant="secondary" className="mt-4 w-full">Adjust my target</ButtonLink>
         </Card>
       )}
+
+      {s.plan && s.plan.status !== "not-reachable" && s.plan.status !== "achieved" && (
+        <Card className="mt-4">
+          <SectionTitle>Your plan</SectionTitle>
+          <dl className="grid grid-cols-2 gap-3">
+            <div>
+              <dt className="text-sm text-ink-soft">Average needed</dt>
+              <dd className="font-display text-2xl font-semibold">{s.plan.requiredAverage.toFixed(2)}</dd>
+            </div>
+            <div>
+              <dt className="text-sm text-ink-soft">Semesters left</dt>
+              <dd className="font-display text-2xl font-semibold">{s.plan.semesters.length}</dd>
+            </div>
+          </dl>
+          <Link href="/plan" className="mt-4 inline-flex min-h-11 items-center gap-1.5 font-semibold text-brand-purple">
+            See your roadmap
+            <ArrowRight className="size-4" aria-hidden />
+          </Link>
+        </Card>
+      )}
+      </div>
     </>
   );
 }

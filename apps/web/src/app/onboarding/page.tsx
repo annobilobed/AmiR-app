@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
+import { ProgrammeInput } from "@/components/programme-input";
 import { Button, Field, inputClass } from "@/components/ui";
 import { completedSemesters } from "@/lib/academic";
 import { useAimr, type Profile } from "@/lib/store";
@@ -14,27 +15,68 @@ const ENTRY = [
   { level: 300, label: "Top-up" },
 ];
 
+const POINTS = [
+  "Add past results by typing them in or from a screenshot",
+  "Get a target for every semester until you graduate",
+  "See the exam score you need in each course",
+];
+
 function Welcome({ onStart }: { onStart: () => void }) {
   return (
-    <main className="aimr-gradient flex min-h-dvh flex-col justify-between px-6 pb-10 pt-16">
-      <div className="mx-auto w-full max-w-lg">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/aimr-mark-white.svg" alt="" className="size-20" />
-        <h1 className="mt-10 font-display text-[40px] font-semibold leading-tight">Aim higher.</h1>
-        <p className="mt-4 max-w-sm text-lg leading-relaxed text-white/90">
-          Know exactly what you need, semester by semester, to reach the class of degree you want.
-        </p>
-      </div>
-      <div className="mx-auto w-full max-w-lg space-y-3">
-        <Button variant="light" className="w-full" onClick={onStart}>
-          Get started
-        </Button>
-        <p className="text-center text-sm text-white/80">Free for every UCC student. Takes about 2 minutes.</p>
-        {accountsEnabled && (
-          <Link href="/account" className="flex min-h-11 items-center justify-center text-[15px] font-semibold text-white underline-offset-4 hover:underline">
-            Already use aimR? Sign in
-          </Link>
-        )}
+    <main className="aimr-gradient min-h-dvh px-6 pb-10 pt-12 lg:flex lg:items-center lg:px-16 lg:py-16">
+      <div className="mx-auto flex min-h-[calc(100dvh-5.5rem)] w-full max-w-lg flex-col justify-between lg:grid lg:min-h-0 lg:max-w-6xl lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:items-center lg:gap-16">
+        <div>
+          {/* aimR logo: the trajectory mark and the name, in white */}
+          <div className="flex items-center gap-3" aria-label="aimR" role="img">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/aimr-mark-white.svg" alt="" className="size-14 lg:size-16" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/brand/aimr-wordmark-white.svg" alt="" className="h-11 w-auto lg:h-14" />
+          </div>
+          <h1 className="mt-10 font-display text-[40px] font-semibold leading-[1.05] lg:mt-14 lg:text-6xl">Aim higher.</h1>
+          <p className="mt-4 max-w-md text-lg leading-relaxed text-white/90 lg:text-xl">
+            Know exactly what you need, semester by semester, to reach the class of degree you want.
+          </p>
+          <ul className="mt-7 space-y-3 text-[15px] text-white/90 lg:text-base">
+            {POINTS.map((t) => (
+              <li key={t} className="flex gap-3">
+                <span className="mt-2 size-2 shrink-0 rounded-full bg-white/80" aria-hidden />
+                {t}
+              </li>
+            ))}
+          </ul>
+          <div className="mt-10 hidden space-y-3 lg:block lg:max-w-sm">
+            <Button variant="light" className="w-full" onClick={onStart}>
+              Get started
+            </Button>
+            <p className="text-sm text-white/80">Free for every UCC student. Takes about 2 minutes.</p>
+            {accountsEnabled && (
+              <Link href="/account" className="inline-flex min-h-11 items-center text-[15px] font-semibold text-white underline-offset-4 hover:underline">
+                Already use aimR? Sign in
+              </Link>
+            )}
+          </div>
+        </div>
+
+        {/* Desktop picture: the trajectory mark, large */}
+        <div className="hidden justify-center lg:flex" aria-hidden>
+          <div className="flex aspect-square w-full max-w-md items-center justify-center rounded-[3rem] bg-white/10 ring-1 ring-white/20">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/aimr-mark-white.svg" alt="" className="w-3/5 drop-shadow-[0_12px_30px_rgba(0,0,0,0.25)]" />
+          </div>
+        </div>
+
+        <div className="mt-10 space-y-3 lg:hidden">
+          <Button variant="light" className="w-full" onClick={onStart}>
+            Get started
+          </Button>
+          <p className="text-center text-sm text-white/80">Free for every UCC student. Takes about 2 minutes.</p>
+          {accountsEnabled && (
+            <Link href="/account" className="flex min-h-11 items-center justify-center text-[15px] font-semibold text-white underline-offset-4 hover:underline">
+              Already use aimR? Sign in
+            </Link>
+          )}
+        </div>
       </div>
     </main>
   );
@@ -93,15 +135,7 @@ export default function Onboarding() {
             <option value="ucc">University of Cape Coast</option>
           </select>
         </Field>
-        <Field label="Programme">
-          <input
-            className={inputClass}
-            required
-            placeholder="e.g. BSc Economics"
-            value={form.programme}
-            onChange={(e) => update({ programme: e.target.value })}
-          />
-        </Field>
+        <ProgrammeInput value={form.programme} onChange={(programme) => update({ programme })} />
         <div className="grid grid-cols-2 gap-3">
           <Field label="Entry" hint="Direct entry starts at Level 200, top-up at 300.">
             <select className={inputClass} value={form.entryLevel} onChange={(e) => update({ entryLevel: Number(e.target.value) })}>

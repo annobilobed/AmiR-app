@@ -47,6 +47,7 @@ export default function PlanPage() {
   return (
     <>
       <PageHeader title="Your plan" subtitle="Your roadmap to graduation, one semester at a time." />
+      <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] lg:grid-rows-[auto_1fr] lg:items-start lg:gap-6">
 
       {!p ? (
         <Card>
@@ -81,7 +82,7 @@ export default function PlanPage() {
         </Card>
       )}
 
-      <Card className="mt-4">
+      <Card className="mt-4 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mt-0">
         <SectionTitle>Roadmap</SectionTitle>
         <div className="mb-1 flex gap-4 text-xs text-ink-muted">
           <span className="flex items-center gap-1.5"><span className="size-2.5 rounded-full bg-[#a9a4dc]" /> Your GPA</span>
@@ -112,9 +113,10 @@ export default function PlanPage() {
         )}
       </Card>
 
-      <div className="mt-4 space-y-3">
+      <div className="mt-4 space-y-3 lg:col-start-1 lg:mt-0">
         <LinkRow href="/plan/results" icon={ClipboardList} title="Results" text={`${s.record.credits} credits · CGPA ${s.cgpa}`} />
         <LinkRow href="/plan/target" icon={Target} title="Target" text={target100 ? `Aiming for ${fmt100(target100)}` : "Not set yet"} />
+      </div>
       </div>
     </>
   );

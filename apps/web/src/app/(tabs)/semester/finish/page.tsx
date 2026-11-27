@@ -56,7 +56,7 @@ export default function Finish() {
   if (outcome) {
     const m = message(outcome, s.plan?.highestReachableClass.name, s.plan?.status);
     return (
-      <>
+      <div className="lg:max-w-2xl">
         <section className={`aimr-gradient rounded-3xl p-6 ${outcome.beat ? "aimr-gold" : ""}`} aria-live="polite">
           <p className="text-sm text-white/80">{outcome.label}</p>
           <p className="mt-2 font-display text-5xl font-semibold">{outcome.gpaText}</p>
@@ -80,19 +80,19 @@ export default function Finish() {
         </Card>
         <ButtonLink href="/plan" className="mt-4 w-full">See my updated plan</ButtonLink>
         <ButtonLink href="/semester" variant="secondary" className="mt-2 w-full">Set up next semester</ButtonLink>
-      </>
+      </div>
     );
   }
 
   const current = s.remaining[0];
   if (!current || currentCourses.length === 0) {
     return (
-      <>
+      <div className="lg:max-w-2xl">
         <PageHeader title="Enter results" back="/semester" />
         <Card>
           <p className="text-ink-soft">Add this semester&apos;s courses first, then come back when results are out.</p>
         </Card>
-      </>
+      </div>
     );
   }
 
@@ -118,7 +118,7 @@ export default function Finish() {
   }
 
   return (
-    <>
+    <div className="lg:max-w-2xl">
       <PageHeader title="Enter your results" subtitle={semesterLabel(profile!, current.index)} back="/semester" />
       <Card>
         <ul className="divide-y divide-line">
@@ -151,6 +151,6 @@ export default function Finish() {
       <Button className="mt-4 w-full" disabled={!complete} onClick={confirm}>
         Save my results
       </Button>
-    </>
+    </div>
   );
 }

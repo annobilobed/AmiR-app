@@ -96,12 +96,12 @@ export default function Semester() {
 
       <h2 className="mb-3 font-display text-base font-semibold">Your courses</h2>
       {!has && <p className="mb-3 text-ink-soft">Add the courses you registered for this semester.</p>}
-      <ul className="space-y-3">
+      <ul className="space-y-3 lg:grid lg:grid-cols-2 lg:items-start lg:gap-4 lg:space-y-0">
         {currentCourses.map((c) => (
           <CourseCard key={c.id} c={c} />
         ))}
       </ul>
-      <form onSubmit={add} className="mt-3 grid grid-cols-[1fr_5rem_3rem] gap-2" aria-label="Add a registered course">
+      <form onSubmit={add} className="mt-3 grid grid-cols-[1fr_5rem_3rem] gap-2 lg:max-w-md" aria-label="Add a registered course">
         <input className={inputClass} placeholder="Code" aria-label="Course code" value={code} onChange={(e) => setCode(e.target.value)} />
         <input
           className={`${inputClass} px-2 text-center`}
@@ -120,8 +120,8 @@ export default function Semester() {
       <p className="mt-2 text-[13px] text-ink-muted">CA is out of {RULES.caSplit.ca} marks and the exam {RULES.caSplit.exam}, for now the same for every course.</p>
 
       {has && semTarget !== undefined && (
-        <section className="mt-6 space-y-3">
-          <h2 className="font-display text-base font-semibold">Grade options that hit your target</h2>
+        <section className="mt-6 space-y-3 lg:grid lg:grid-cols-2 lg:items-start lg:gap-4 lg:space-y-0">
+          <h2 className="font-display text-base font-semibold lg:col-span-2">Grade options that hit your target</h2>
           {options.length === 0 ? (
             <Card>
               <p className="text-ink-soft">This target needs more than straight A&apos;s in these courses. Your later semesters can carry more.</p>
@@ -157,7 +157,7 @@ export default function Semester() {
       )}
 
       {has && (
-        <Card className="mt-6">
+        <Card className="mt-6 lg:max-w-xl">
           <h2 className="font-display font-semibold">Results out?</h2>
           <p className="mt-1 text-sm text-ink-soft">Enter your final grades to update your CGPA and re-plan the semesters ahead.</p>
           <ButtonLink href="/semester/finish" variant="secondary" className="mt-3 w-full">Enter my results</ButtonLink>

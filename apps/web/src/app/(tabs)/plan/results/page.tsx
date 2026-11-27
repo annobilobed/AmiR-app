@@ -110,7 +110,7 @@ export default function Results() {
         </Card>
       )}
 
-      <div className="space-y-4">
+      <div className="space-y-4 lg:grid lg:grid-cols-2 lg:items-start lg:gap-5 lg:space-y-0">
         {s.semesters.map((sem) => (
           <Card key={sem.index}>
             <div className="mb-2 flex items-baseline justify-between">

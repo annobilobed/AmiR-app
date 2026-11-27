@@ -17,7 +17,7 @@ export default function Target() {
   const preview = summarise(profile!, courses, currentCourses, valid ? value : null, overrides).plan;
 
   return (
-    <>
+    <div className="lg:max-w-2xl">
       <PageHeader title="Set your target" subtitle="Choose the class of degree you're aiming for, or an exact CGPA." back="/plan" />
 
       <div role="radiogroup" aria-label="Class of degree" className="space-y-2.5">
@@ -118,6 +118,6 @@ export default function Target() {
           Save target and see my plan
         </Button>
       </div>
-    </>
+    </div>
   );
 }
