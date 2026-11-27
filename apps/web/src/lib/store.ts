@@ -31,6 +31,11 @@ export interface CurrentCourse {
   id: string;
   code: string;
   credits: number;
+  /** Grade the student is aiming for in this course. */
+  targetGrade?: string;
+  /** CA marks earned so far, and how many CA marks have been assessed so far (out of the CA weight). */
+  caEarned?: number;
+  caAssessed?: number;
 }
 
 interface AimrState {
@@ -45,6 +50,9 @@ interface AimrState {
   upsertCourse: (c: StoredCourse) => void;
   removeCourse: (id: string) => void;
   setCurrentCourses: (c: CurrentCourse[]) => void;
+  updateCurrentCourse: (id: string, patch: Partial<CurrentCourse>) => void;
+  /** Results day: saves final grades as results and moves the student to the next semester. */
+  finishSemester: (semester: number, grades: Record<string, string>) => void;
   setTarget: (t: number | null) => void;
   setOverride: (semester: number, t: number | null) => void;
   reset: () => void;
@@ -67,6 +75,28 @@ export const useAimr = create<AimrState>()(
         }),
       removeCourse: (id) => set((s) => ({ courses: s.courses.filter((c) => c.id !== id) })),
       setCurrentCourses: (currentCourses) => set({ currentCourses }),
+      updateCurrentCourse: (id, patch) =>
+        set((s) => ({ currentCourses: s.currentCourses.map((c) => (c.id === id ? { ...c, ...patch } : c)) })),
+      finishSemester: (semester, grades) =>
+        set((s) => {
+          if (!s.profile) return {};
+          const added: StoredCourse[] = s.currentCourses
+            .filter((c) => grades[c.id])
+            .map((c) => ({ id: newId(), semester, code: c.code, credits: c.credits, grade: grades[c.id]! }));
+          const p = s.profile;
+          const next =
+            p.currentSemester === 1
+              ? { ...p, currentSemester: 2 as const }
+              : { ...p, currentSemester: 1 as const, currentLevel: p.currentLevel + 100 };
+          const overrides = { ...s.overrides };
+          delete overrides[semester];
+          return {
+            courses: [...s.courses.filter((c) => c.semester !== semester), ...added],
+            currentCourses: [],
+            overrides,
+            profile: next,
+          };
+        }),
       setTarget: (target100) => set({ target100, overrides: {} }),
       setOverride: (semester, t) =>
         set((s) => {
