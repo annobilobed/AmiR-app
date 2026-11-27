@@ -129,8 +129,10 @@ export default function Results() {
         ))}
       </div>
 
-      <p className="mt-5 text-center text-sm text-ink-muted">Reading results from a screenshot is coming soon.</p>
-      <ButtonLink href="/plan/target" className="mt-4 w-full">
+      <ButtonLink href="/plan/import" variant="secondary" className="mt-5 w-full">
+        Import from a screenshot
+      </ButtonLink>
+      <ButtonLink href="/plan/target" className="mt-3 w-full">
         {target100 ? "Review my target" : "Next: set my target"}
       </ButtonLink>
     </>
