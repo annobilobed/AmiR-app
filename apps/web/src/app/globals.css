@@ -64,10 +64,40 @@ body {
   100% { background-position: 0 0, 0 0, 0% 50%; }
 }
 
+/* Reduced motion: the gradient stops drifting, but its colours still change. A second colour layer
+   slowly fades in and out over the card instead. Fading colour is not movement, so it is
+   comfortable for people who turn this setting on because motion makes them unwell. */
 @media (prefers-reduced-motion: reduce) {
   .aimr-gradient,
-  .aimr-gradient.aimr-gold { animation: none; }
+  .aimr-gradient.aimr-gold {
+    animation: none;
+    position: relative;
+    isolation: isolate;
+  }
+  .aimr-gradient::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    background:
+      radial-gradient(120% 120% at 100% 100%, rgb(153 53 86 / 0.6), transparent 55%),
+      linear-gradient(120deg, #3756ad 0%, #185fa5 55%, #16658f 100%);
+    opacity: 0;
+    animation: aimr-fade 75s ease-in-out infinite;
+  }
+  .aimr-gradient.aimr-gold::before {
+    background:
+      radial-gradient(90% 90% at 100% 0%, rgb(154 100 16 / 0.9), transparent 60%),
+      linear-gradient(120deg, #9a6410 0%, #8a5a0f 60%, #7a4d14 100%);
+  }
   * { scroll-behavior: auto !important; }
+}
+
+@keyframes aimr-fade {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 0.85; }
 }
 
 :focus-visible {
