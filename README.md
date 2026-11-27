@@ -26,12 +26,17 @@ pnpm build
 
 ## Status
 
-First slice of Phase 1 (free launch setup, product doc section 8.1):
+Phase 1, free launch setup (product doc section 8.1). Working now:
 
-- Onboarding, results entry, CGPA and class of degree, targets with a feasibility check,
-  the front-loaded plan, this semester's points budget and grade options.
-- Data is stored on the device (localStorage) for now. Next: Supabase accounts and sync,
-  screenshot reading (Tesseract.js), CA tracking, coaching.
+- Onboarding, results entry by hand or from a screenshot (Tesseract.js on the device; the image
+  is never uploaded), CGPA and class of degree.
+- Targets with a feasibility check, the front-loaded semester plan, points budget and grade options.
+- CA tracking per course: exam score needed, status, likely grade range, semester outlook.
+- Results day: final grades become results, the student moves on, the plan re-spreads.
+- Installable and offline after the first visit (service worker in `apps/web/public/sw.js`).
+
+Data is stored on the device (localStorage) for now. Next: Supabase accounts and sync, coaching,
+the Ask Aimr assistant.
 
 ## Open questions to confirm with UCC before launch
 
