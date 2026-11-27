@@ -1,4 +1,4 @@
-# Aimr logo: Trajectory
+# aimR logo: Trajectory
 
 A gently curving, rising path of dots lands in a target. Each dot is a semester, growing in
 confidence as it climbs; the target is the class of degree the student is
@@ -19,7 +19,7 @@ aiming for. Aim higher, one semester at a time.
 | `aimr-wordmark-ink/white.svg` | Name only, for tight horizontal spaces |
 | `brand-sheet.html` | Overview of everything above |
 
-The "aimr" lettering is drawn as shapes, not a font, so it looks the same everywhere.
+The "aimR" lettering is drawn as shapes, not a font, so it looks the same everywhere.
 
 ## Next.js setup
 

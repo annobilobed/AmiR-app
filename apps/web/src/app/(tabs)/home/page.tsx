@@ -51,7 +51,7 @@ export default function Home() {
       {!target100 && (
         <Card className="mt-4">
           <SectionTitle>Set your target</SectionTitle>
-          <p className="text-ink-soft">Choose the class of degree you want. Aimr turns it into a plan for every semester.</p>
+          <p className="text-ink-soft">Choose the class of degree you want. aimR turns it into a plan for every semester.</p>
           <ButtonLink href="/plan/target" className="mt-4 w-full">Set my target</ButtonLink>
         </Card>
       )}

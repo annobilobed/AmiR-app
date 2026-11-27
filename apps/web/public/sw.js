@@ -1,8 +1,8 @@
-/* Aimr service worker: makes the installed app open and work offline.
+/* aimR service worker: makes the installed app open and work offline.
  *  - Pages and their data: network first, cached copy when offline.
  *  - Hashed build files, icons and the OCR engine: cache first (they never change at a URL).
  * Bump VERSION to drop old caches after a breaking change. */
-const VERSION = "aimr-v1";
+const VERSION = "aimr-v2";
 const PAGES = ["/", "/home", "/semester", "/semester/finish", "/plan", "/plan/results", "/plan/target", "/plan/import", "/coach", "/onboarding"];
 const IMMUTABLE = [/^\/_next\/static\//, /^\/ocr\//, /\.(?:png|svg|ico|woff2?)$/];
 

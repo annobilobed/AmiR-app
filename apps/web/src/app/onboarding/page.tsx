@@ -73,7 +73,7 @@ export default function Onboarding() {
   return (
     <main className="mx-auto max-w-lg px-5 pb-12 pt-8">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/aimr-logo-horizontal-light.svg" alt="Aimr" className="h-10 w-auto" />
+      <img src="/aimr-logo-horizontal-light.svg" alt="aimR" className="h-10 w-auto" />
       <h1 className="mt-8 font-display text-2xl font-semibold">Tell us where you are</h1>
       <p className="mt-1 text-[15px] text-ink-soft">This sets up your semesters. You can change it later.</p>
 

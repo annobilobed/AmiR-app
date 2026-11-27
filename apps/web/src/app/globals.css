@@ -28,7 +28,7 @@ body {
   font-family: var(--font-sans);
 }
 
-/* Aimr's signature: a very slow drifting gradient (one cycle every 40 s), used only on the Home
+/* aimR's signature: a very slow drifting gradient (one cycle every 40 s), used only on the Home
    header card and the welcome screen. Static when the device asks for reduced motion. */
 .aimr-gradient {
   background:

@@ -50,7 +50,7 @@ export default function PlanPage() {
 
       {!p ? (
         <Card>
-          <p className="leading-relaxed text-ink-soft">Set a CGPA target and Aimr will work out what you need each semester.</p>
+          <p className="leading-relaxed text-ink-soft">Set a CGPA target and aimR will work out what you need each semester.</p>
           <ButtonLink href="/plan/target" className="mt-4 w-full">
             Set my target
           </ButtonLink>

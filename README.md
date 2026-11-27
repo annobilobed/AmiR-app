@@ -1,9 +1,9 @@
-# Aimr
+# aimR
 
-Aimr helps university students plan, track and reach their GPA and CGPA targets, semester by
-semester, starting with the University of Cape Coast. Tagline: *Aimr: aim higher.*
+aimR helps university students plan, track and reach their GPA and CGPA targets, semester by
+semester, starting with the University of Cape Coast. Tagline: *aimR: aim higher.*
 
-![Aimr screens](docs/screens.png)
+![aimR screens](docs/screens.png)
 
 Watch the 44-second walkthrough: [docs/aimr-walkthrough.mp4](docs/aimr-walkthrough.mp4)
 
@@ -38,7 +38,7 @@ Phase 1, free launch setup (product doc section 8.1). Working now:
 - Installable and offline after the first visit (service worker in `apps/web/public/sw.js`).
 
 Data is stored on the device (localStorage) for now. Next: Supabase accounts and sync, coaching,
-the Ask Aimr assistant.
+the Ask aimR assistant.
 
 ## Open questions to confirm with UCC before launch
 

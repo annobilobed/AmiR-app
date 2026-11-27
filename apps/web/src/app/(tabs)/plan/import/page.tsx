@@ -112,7 +112,7 @@ export default function ImportSlip() {
 
   return (
     <>
-      <PageHeader title="Import a result slip" subtitle="Take a screenshot of your results and Aimr will read the courses for you." back="/plan/results" />
+      <PageHeader title="Import a result slip" subtitle="Take a screenshot of your results and aimR will read the courses for you." back="/plan/results" />
 
       <Card>
         <Field label="Which semester is this slip for?">
@@ -159,7 +159,7 @@ export default function ImportSlip() {
           <p className="mt-1 text-sm text-ink-soft">
             {rows.length
               ? "Fix anything highlighted. Nothing is saved until you confirm."
-              : "Aimr couldn't find course codes in this image. Try a closer screenshot of the results table."}
+              : "aimR couldn't find course codes in this image. Try a closer screenshot of the results table."}
           </p>
           {preview && (
             <details className="mt-3 rounded-2xl bg-white p-3 ring-1 ring-line">
