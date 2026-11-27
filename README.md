@@ -5,6 +5,8 @@ semester, starting with the University of Cape Coast. Tagline: *Aimr: aim higher
 
 ![Aimr screens](docs/screens.png)
 
+Watch the 44-second walkthrough: [docs/aimr-walkthrough.mp4](docs/aimr-walkthrough.mp4)
+
 ## Repository layout
 
 | Path | What it is |
