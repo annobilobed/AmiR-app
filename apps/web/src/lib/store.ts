@@ -52,6 +52,8 @@ interface AimrState extends SyncedData {
   updatedAt: number;
   /** The updatedAt that was last saved to, or loaded from, the account. null = never synced. */
   syncedAt: number | null;
+  /** Results day: Home turns gold until this time (end of the day the student beat their target). */
+  celebrateUntil: number | null;
   /** Replaces the data with what the account holds (sign-in on a new phone, or newer elsewhere). */
   applySynced: (data: SyncedData, at: number) => void;
   markSynced: (at: number) => void;
@@ -67,13 +69,34 @@ interface AimrState extends SyncedData {
   setCurrentCourses: (c: CurrentCourse[]) => void;
   updateCurrentCourse: (id: string, patch: Partial<CurrentCourse>) => void;
   /** Results day: saves final grades as results and moves the student to the next semester. */
-  finishSemester: (semester: number, grades: Record<string, string>) => void;
+  finishSemester: (semester: number, grades: Record<string, string>, beatTarget?: boolean) => void;
   setTarget: (t: number | null) => void;
   setOverride: (semester: number, t: number | null) => void;
   reset: () => void;
 }
 
 const initial: SyncedData = { profile: null, courses: [], currentCourses: [], target100: null, overrides: {} };
+
+function endOfToday(): number {
+  const d = new Date();
+  d.setHours(23, 59, 59, 999);
+  return d.getTime();
+}
+
+/** True on the day a student beat their semester target: the gradient turns gold. */
+export function useCelebrating(): boolean {
+  const until = useAimr((s) => s.celebrateUntil);
+  return useSyncExternalStore(
+    (notify) => {
+      // Re-check at the moment the celebration ends (midnight), so the card turns back by itself.
+      if (until === null || until <= Date.now()) return () => {};
+      const t = setTimeout(notify, until - Date.now() + 50);
+      return () => clearTimeout(t);
+    },
+    () => until !== null && until > Date.now(),
+    () => false,
+  );
+}
 
 export function pickSynced(s: SyncedData): SyncedData {
   return { profile: s.profile, courses: s.courses, currentCourses: s.currentCourses, target100: s.target100, overrides: s.overrides };
@@ -92,6 +115,7 @@ export const useAimr = create<AimrState>()(
       ...initial,
       updatedAt: 0,
       syncedAt: null,
+      celebrateUntil: null,
       applySynced: (data, at) => rawSet({ ...pickSynced(data), updatedAt: at, syncedAt: at }),
       markSynced: (at) => rawSet({ syncedAt: at }),
       setProfile: (profile) => set({ profile }),
@@ -107,7 +131,7 @@ export const useAimr = create<AimrState>()(
       setCurrentCourses: (currentCourses) => set({ currentCourses }),
       updateCurrentCourse: (id, patch) =>
         set((s) => ({ currentCourses: s.currentCourses.map((c) => (c.id === id ? { ...c, ...patch } : c)) })),
-      finishSemester: (semester, grades) =>
+      finishSemester: (semester, grades, beatTarget = false) =>
         set((s) => {
           if (!s.profile) return {};
           const added: StoredCourse[] = s.currentCourses
@@ -125,6 +149,7 @@ export const useAimr = create<AimrState>()(
             currentCourses: [],
             overrides,
             profile: next,
+            celebrateUntil: beatTarget ? endOfToday() : s.celebrateUntil,
           };
         }),
       setTarget: (target100) => set({ target100, overrides: {} }),
@@ -135,7 +160,7 @@ export const useAimr = create<AimrState>()(
           else overrides[semester] = t;
           return { overrides };
         }),
-      reset: () => rawSet({ ...initial, updatedAt: Date.now(), syncedAt: null }),
+      reset: () => rawSet({ ...initial, updatedAt: Date.now(), syncedAt: null, celebrateUntil: null }),
       };
     },
     {

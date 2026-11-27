@@ -1,6 +1,6 @@
 "use client";
 
-import { formatGpa, tally } from "@aimr/engine";
+import { atLeast, formatGpa, tally } from "@aimr/engine";
 import { useState } from "react";
 import { Badge, Button, ButtonLink, Card, PageHeader, inputClass } from "@/components/ui";
 import { RULES, fmt100, semesterLabel, summarise } from "@/lib/academic";
@@ -15,11 +15,13 @@ interface Outcome {
   target100?: number;
   previousGpa?: number;
   oldCgpa: string;
+  /** Met or beat the semester target, compared exactly. */
+  beat: boolean;
 }
 
 /** Result-aware message (FR-8.1): never shames, always shows what is still possible. */
 function message(o: Outcome, highestClass?: string, status?: string) {
-  if (o.target100 !== undefined && o.gpa * 100 >= o.target100) {
+  if (o.beat && o.target100 !== undefined) {
     return {
       title: "You beat your target.",
       text: `${o.gpaText} against a target of ${fmt100(o.target100)}. That extra is a buffer for the semesters ahead.`,
@@ -55,7 +57,7 @@ export default function Finish() {
     const m = message(outcome, s.plan?.highestReachableClass.name, s.plan?.status);
     return (
       <>
-        <section className="aimr-gradient rounded-3xl p-6" aria-live="polite">
+        <section className={`aimr-gradient rounded-3xl p-6 ${outcome.beat ? "aimr-gold" : ""}`} aria-live="polite">
           <p className="text-sm text-white/80">{outcome.label}</p>
           <p className="mt-2 font-display text-5xl font-semibold">{outcome.gpaText}</p>
           <p className="mt-1 text-white/90">Semester GPA</p>
@@ -100,15 +102,18 @@ export default function Finish() {
     const results = currentCourses.map((c) => ({ code: c.code, credits: c.credits, grade: grades[c.id]!, semester: 0 }));
     const t = tally(results, { ...RULES, resitRule: "both" });
     const prev = s.semesters.filter((x) => x.tally.credits > 0).at(-1);
+    const target100 = s.plan?.semesters[0]?.target100;
+    const beat = target100 !== undefined && atLeast(t, target100);
     setOutcome({
       label: semesterLabel(profile!, current!.index),
       gpa: t.points10 / 10 / t.credits,
       gpaText: formatGpa(t),
-      target100: s.plan?.semesters[0]?.target100,
+      target100,
       previousGpa: prev ? prev.tally.points10 / 10 / prev.tally.credits : undefined,
       oldCgpa: s.cgpa,
+      beat,
     });
-    finishSemester(current!.index, grades);
+    finishSemester(current!.index, grades, beat);
     window.scrollTo({ top: 0 });
   }
 

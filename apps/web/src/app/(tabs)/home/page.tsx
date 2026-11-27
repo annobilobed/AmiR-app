@@ -4,7 +4,7 @@ import { ArrowRight, UserRound } from "lucide-react";
 import Link from "next/link";
 import { Badge, ButtonLink, Card, SectionTitle } from "@/components/ui";
 import { FEASIBILITY_COPY, fmt100, semesterLabel, completedSemesters, summarise } from "@/lib/academic";
-import { useAimr } from "@/lib/store";
+import { useAimr, useCelebrating } from "@/lib/store";
 
 export default function Home() {
   const { profile, courses, currentCourses, target100, overrides } = useAimr();
@@ -12,10 +12,14 @@ export default function Home() {
   const s = summarise(p, courses, currentCourses, target100, overrides);
   const now = s.plan?.semesters[0];
   const greeting = p.name ? `Hi, ${p.name}` : "Welcome back";
+  const gold = useCelebrating();
 
   return (
     <>
-      <section className="aimr-gradient rounded-3xl p-6 shadow-[0_10px_30px_-12px_rgba(83,74,183,0.55)]" aria-label="Your standing">
+      <section
+        className={`aimr-gradient rounded-3xl p-6 ${gold ? "aimr-gold shadow-[0_10px_30px_-12px_rgba(122,77,20,0.6)]" : "shadow-[0_10px_30px_-12px_rgba(83,74,183,0.55)]"}`}
+        aria-label="Your standing"
+      >
         <div className="flex items-center justify-between">
           <p className="font-display font-semibold text-white/90">{greeting}</p>
           <Link
@@ -37,7 +41,9 @@ export default function Home() {
           </div>
         </div>
         <p className="mt-4 text-[15px] text-white/90">
-          {s.record.credits === 0
+          {gold
+            ? "You beat your semester target. Enjoy today."
+            : s.record.credits === 0
             ? "Add your results to see where you stand."
             : s.next
               ? `${s.className} · ${s.next.gap} to ${s.next.name}`
