@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Open_Sans, Poppins } from "next/font/google";
 import { ServiceWorkerRegister } from "@/components/sw-register";
+import { SyncEngine } from "@/components/sync-engine";
 import "./globals.css";
 
 const heading = Poppins({ subsets: ["latin"], weight: ["500", "600", "700"], variable: "--font-heading" });
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className="min-h-dvh antialiased">
         {children}
         <ServiceWorkerRegister />
+        <SyncEngine />
       </body>
     </html>
   );

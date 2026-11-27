@@ -1,6 +1,7 @@
 "use client";
 
-import { Card, PageHeader } from "@/components/ui";
+import { ButtonLink, Card, PageHeader } from "@/components/ui";
+import { accountsEnabled } from "@/lib/supabase";
 import { useAimr } from "@/lib/store";
 
 const COMING = [
@@ -29,8 +30,13 @@ export default function Coach() {
       <Card className="mt-4">
         <h2 className="font-display font-semibold">Your data</h2>
         <p className="mt-1 text-sm leading-relaxed text-ink-soft">
-          For now, everything you enter stays on this device. Accounts and sync are on the way.
+          {accountsEnabled
+            ? "Sign in to save your results and plan to your account, or download a backup."
+            : "For now, everything you enter stays on this phone. Download a backup to keep a copy."}
         </p>
+        <ButtonLink href="/account" variant="secondary" className="mt-3 w-full">
+          Account and backup
+        </ButtonLink>
         <button
           className="mt-3 min-h-11 cursor-pointer font-semibold text-warn"
           onClick={() => {

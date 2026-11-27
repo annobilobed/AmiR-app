@@ -9,10 +9,12 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "predev": "node scripts/copy-ocr.mjs",
-    "prebuild": "node scripts/copy-ocr.mjs"
+    "prebuild": "node scripts/copy-ocr.mjs",
+    "test": "vitest run"
   },
   "dependencies": {
     "@aimr/engine": "workspace:*",
+    "@supabase/supabase-js": "^2.119.2",
     "@tesseract.js-data/eng": "^1.0.0",
     "lucide-react": "^1.81.0",
     "next": "16.4.6",
@@ -29,7 +31,8 @@
     "eslint": "^9",
     "eslint-config-next": "16.4.6",
     "tailwindcss": "4.3.3",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^5.1.2"
   },
   "packageManager": "pnpm@10.28.0"
 }

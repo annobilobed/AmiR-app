@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, type ReactNode } from "react";
 import { useAimr, useHydrated } from "@/lib/store";
+import { useSync } from "@/lib/sync";
 
 function Skeleton() {
   return (
@@ -19,10 +20,12 @@ export function AppGate({ children }: { children: ReactNode }) {
   const hydrated = useHydrated();
   const profile = useAimr((s) => s.profile);
   const router = useRouter();
+  // While a signed-in student's data is loading from their account, wait instead of onboarding.
+  const loading = useSync().status === "syncing";
 
   useEffect(() => {
-    if (hydrated && !profile) router.replace("/onboarding");
-  }, [hydrated, profile, router]);
+    if (hydrated && !profile && !loading) router.replace("/onboarding");
+  }, [hydrated, profile, loading, router]);
 
   if (!hydrated || !profile) return <Skeleton />;
   return <>{children}</>;

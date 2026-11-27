@@ -14,6 +14,7 @@ Watch the 44-second walkthrough: [docs/aimr-walkthrough.mp4](docs/aimr-walkthrou
 | `packages/engine` | `@aimr/engine`: the deterministic planning engine (pure TypeScript, no AI). GPA/CGPA, class of degree, feasibility, the semester-by-semester plan, points budget, grade combinations, exam score needed. Rules per university are data (`src/rules.ts`). |
 | `apps/web` | `@aimr/web`: the Next.js 16 web app (mobile-first, installable). |
 | `apps/web/public/brand` | The logo set and its usage guide. |
+| `supabase/migrations` | The PostgreSQL schema: tables, row-level security and the sync functions. |
 
 ## Run it
 
@@ -22,7 +23,8 @@ Needs Node 22+ and pnpm 10.
 ```bash
 pnpm install
 pnpm dev        # http://localhost:3000
-pnpm test       # engine tests
+pnpm test       # engine and sync tests
+pnpm test:db    # database schema and security tests (PostgreSQL in Node)
 pnpm build
 ```
 
@@ -37,8 +39,11 @@ Phase 1, free launch setup (product doc section 8.1). Working now:
 - Results day: final grades become results, the student moves on, the plan re-spreads.
 - Installable and offline after the first visit (service worker in `apps/web/public/sw.js`).
 
-Data is stored on the device (localStorage) for now. Next: Supabase accounts and sync, coaching,
-the Ask aimR assistant.
+- Accounts (PostgreSQL on Supabase): sign-in by email link or code, local-first sync, a choice when
+  a phone and an account both hold data, backup file download and restore, account deletion.
+  Switched on once the database is connected: see [docs/SETUP.md](docs/SETUP.md).
+
+Next: coaching and the Ask aimR assistant.
 
 ## Open questions to confirm with UCC before launch
 

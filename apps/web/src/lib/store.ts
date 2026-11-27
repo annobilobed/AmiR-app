@@ -38,8 +38,23 @@ export interface CurrentCourse {
   caAssessed?: number;
 }
 
-interface AimrState {
+/** The part of the state that is saved to the student's account. */
+export interface SyncedData {
   profile: Profile | null;
+  courses: StoredCourse[];
+  currentCourses: CurrentCourse[];
+  target100: number | null;
+  overrides: Record<number, number>;
+}
+
+interface AimrState extends SyncedData {
+  /** When the data last changed on this device (ms). */
+  updatedAt: number;
+  /** The updatedAt that was last saved to, or loaded from, the account. null = never synced. */
+  syncedAt: number | null;
+  /** Replaces the data with what the account holds (sign-in on a new phone, or newer elsewhere). */
+  applySynced: (data: SyncedData, at: number) => void;
+  markSynced: (at: number) => void;
   courses: StoredCourse[];
   currentCourses: CurrentCourse[];
   /** CGPA target x100, e.g. 360. */
@@ -58,12 +73,27 @@ interface AimrState {
   reset: () => void;
 }
 
-const initial = { profile: null, courses: [], currentCourses: [], target100: null, overrides: {} };
+const initial: SyncedData = { profile: null, courses: [], currentCourses: [], target100: null, overrides: {} };
+
+export function pickSynced(s: SyncedData): SyncedData {
+  return { profile: s.profile, courses: s.courses, currentCourses: s.currentCourses, target100: s.target100, overrides: s.overrides };
+}
 
 export const useAimr = create<AimrState>()(
   persist(
-    (set) => ({
+    (rawSet) => {
+      // Every change to the data stamps updatedAt, so sync knows what is new on this device.
+      const set: typeof rawSet = (partial) =>
+        rawSet((s) => {
+          const patch = typeof partial === "function" ? partial(s) : partial;
+          return { ...patch, updatedAt: Date.now() };
+        });
+      return {
       ...initial,
+      updatedAt: 0,
+      syncedAt: null,
+      applySynced: (data, at) => rawSet({ ...pickSynced(data), updatedAt: at, syncedAt: at }),
+      markSynced: (at) => rawSet({ syncedAt: at }),
       setProfile: (profile) => set({ profile }),
       upsertCourse: (c) =>
         set((s) => {
@@ -105,9 +135,19 @@ export const useAimr = create<AimrState>()(
           else overrides[semester] = t;
           return { overrides };
         }),
-      reset: () => set(initial),
-    }),
-    { name: "aimr", version: 1, storage: createJSONStorage(() => localStorage) },
+      reset: () => rawSet({ ...initial, updatedAt: Date.now(), syncedAt: null }),
+      };
+    },
+    {
+      name: "aimr",
+      version: 2,
+      storage: createJSONStorage(() => localStorage),
+      migrate: (old, version) => {
+        const s = old as Partial<AimrState>;
+        if (version < 2) return { ...s, updatedAt: Date.now(), syncedAt: null } as AimrState;
+        return s as AimrState;
+      },
+    },
   ),
 );
 

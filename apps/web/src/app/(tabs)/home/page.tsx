@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, UserRound } from "lucide-react";
 import Link from "next/link";
 import { Badge, ButtonLink, Card, SectionTitle } from "@/components/ui";
 import { FEASIBILITY_COPY, fmt100, semesterLabel, completedSemesters, summarise } from "@/lib/academic";
@@ -18,8 +18,13 @@ export default function Home() {
       <section className="aimr-gradient rounded-3xl p-6 shadow-[0_10px_30px_-12px_rgba(83,74,183,0.55)]" aria-label="Your standing">
         <div className="flex items-center justify-between">
           <p className="font-display font-semibold text-white/90">{greeting}</p>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/aimr-mark-white.svg" alt="" className="size-8 opacity-90" />
+          <Link
+            href="/account"
+            aria-label="Account and data"
+            className="-mr-2 flex size-11 items-center justify-center rounded-full text-white/90 transition-colors hover:bg-white/15"
+          >
+            <UserRound className="size-6" aria-hidden />
+          </Link>
         </div>
         <div className="mt-6 flex items-end justify-between gap-4">
           <div>

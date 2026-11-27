@@ -5,6 +5,8 @@ import { useState, type FormEvent } from "react";
 import { Button, Field, inputClass } from "@/components/ui";
 import { completedSemesters } from "@/lib/academic";
 import { useAimr, type Profile } from "@/lib/store";
+import { accountsEnabled } from "@/lib/supabase";
+import Link from "next/link";
 
 const ENTRY = [
   { level: 100, label: "Regular" },
@@ -28,6 +30,11 @@ function Welcome({ onStart }: { onStart: () => void }) {
           Get started
         </Button>
         <p className="text-center text-sm text-white/80">Free for every UCC student. Takes about 2 minutes.</p>
+        {accountsEnabled && (
+          <Link href="/account" className="flex min-h-11 items-center justify-center text-[15px] font-semibold text-white underline-offset-4 hover:underline">
+            Already use aimR? Sign in
+          </Link>
+        )}
       </div>
     </main>
   );
